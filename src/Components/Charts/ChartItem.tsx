@@ -1,5 +1,5 @@
 import { GridItem, Flex, Box, Text } from "@chakra-ui/react";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useMeasure } from "react-use";
 import { LineChart, Line } from "recharts";
 
@@ -12,21 +12,38 @@ interface IProps {
 }
 
 const ChartItem: FC<IProps> = ({
-	data,
+	data = [],
 	rowStart,
 	rowEnd,
 	name,
 	isLast = false,
 }) => {
-	data = data.map((el) => {
-		const newEl = {
-			...el,
-			pv: el.pv + Math.floor(Math.random() * 20),
-		};
-		return newEl;
-	});
+	const [chartData, setChartData] = useState(data);
 	const [ChartContainerRef, { width, height }] = useMeasure<any>();
-	const diff = data[data.length - 1].pv - data[data.length - 2].pv;
+
+	const calculateDiff = () => {
+		try {
+			if (chartData.length > 1) {
+				return (
+					chartData[chartData.length].total -
+					chartData[chartData.length - 1].total
+				);
+			} else {
+				return 0;
+			}
+		} catch {
+			return 0;
+		}
+	};
+
+	const calculateSum = () => {
+		let sum = 0;
+		chartData.forEach((entry) => {
+			sum += entry.total;
+		});
+		return sum;
+	};
+
 	return (
 		<GridItem
 			display="flex"
@@ -38,20 +55,20 @@ const ChartItem: FC<IProps> = ({
 				<Text fontWeight="semibold" fontSize="md">
 					{name}
 				</Text>
-				<Text color={diff > 0 ? "green.200" : "red.400"}>
-					15 ({diff > 0 ? "+" : ""}
-					{diff})
+				<Text color="green.200">
+					{calculateSum()} ({calculateDiff()})
 				</Text>
 			</Flex>
 			<Box w="60%" p={1}>
 				<Box w="full" h="full" p={2} ref={ChartContainerRef}>
-					<LineChart width={width} height={height} data={data}>
+					<LineChart width={width} height={height} data={chartData}>
 						<Line
 							type="monotone"
-							dataKey="pv"
+							dataKey="total"
 							stroke="#F56565"
 							strokeWidth={3}
 						/>
+						test
 					</LineChart>
 				</Box>
 			</Box>

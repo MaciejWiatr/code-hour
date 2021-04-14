@@ -1,4 +1,10 @@
-import { Flex, Textarea, Button, Text } from "@chakra-ui/react";
+import {
+	Flex,
+	Textarea,
+	Button,
+	Text,
+	CircularProgress,
+} from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -17,8 +23,13 @@ function FormSection() {
 	const [submitDisabled, setSubmitDisabled] = useState(false);
 	const textareaWatch = watch("TweetText");
 	const [previewVal, setPreviewVal] = useState("");
-
 	const { postTweet } = useTwitter();
+	const statusColors = {
+		Warning: "#ECC94B",
+		Error: "#F56565",
+		Ok: "#48BB78",
+	};
+
 	const onSubmit = async () => {
 		postTweet(textareaWatch);
 		Swal.fire({
@@ -52,18 +63,18 @@ function FormSection() {
 	}, [textareaWatch, setTextAreaStatus, setNumber]);
 
 	useEffect(() => {
-		if (letterNumber > 200 && letterNumber < 250) {
+		if (letterNumber >= 200 && letterNumber <= 250) {
 			setTextAreaStatus("Warning");
-		} else if (letterNumber > 250) {
+		} else if (letterNumber >= 250) {
 			setTextAreaStatus("Error");
 			setSubmitDisabled(true);
-		} else if (letterNumber < 200) {
+		} else if (letterNumber <= 200) {
 			setTextAreaStatus("Ok");
 		} else {
 			setTextAreaStatus("Ok");
 		}
 
-		if (textAreaStatus !== "Ok" && letterNumber < 250) {
+		if (textAreaStatus !== "Ok" && letterNumber <= 250) {
 			setSubmitDisabled(false);
 		}
 	}, [letterNumber, setTextAreaStatus]);
@@ -78,10 +89,10 @@ function FormSection() {
 				return "none";
 			}
 			case "Warning": {
-				return "1.5px solid yellow !important";
+				return "2px solid #ECC94B !important";
 			}
 			case "Error": {
-				return "1.5px solid red !important";
+				return "2px solid #F56565 !important";
 			}
 			default:
 				return "none";
@@ -103,9 +114,33 @@ function FormSection() {
 					required
 					{...register("TweetText")}
 				></Textarea>
-				<Text mt="1" mb="1" fontSize="sm" color="gray.500">
-					Number of letters: {letterNumber}
-				</Text>
+				<Flex
+					w="full"
+					justifyContent="space-between"
+					alignItems="center"
+					mt="2"
+					mb="2"
+					fontSize="sm"
+				>
+					<Flex alignItems="center">
+						<CircularProgress
+							value={(letterNumber / 250) * 100}
+							border="none"
+							size="20px"
+							thickness="13px"
+							trackColor="gray.600"
+							color={statusColors[textAreaStatus]}
+							mr="1"
+						/>
+						<Text color="gray.500">
+							Number of letters: {letterNumber}
+						</Text>
+					</Flex>
+
+					{textAreaStatus === "Error" ? (
+						<Text color="red.400">You've reached the limit</Text>
+					) : null}
+				</Flex>
 				<Flex w="full">
 					<Button
 						type="submit"
@@ -148,7 +183,7 @@ function FormSection() {
 			</Text>
 			<Textarea
 				pt="2"
-				h="24"
+				h="36"
 				bgColor="gray.700"
 				border="none"
 				value={previewVal}

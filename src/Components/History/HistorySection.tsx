@@ -5,19 +5,18 @@ import useTwitter from "../../hooks/useTwitter";
 import { ITweetHistoryElement } from "../../ts/interfaces";
 
 function HistorySection() {
-	const { getChallengeTweets } = useTwitter();
+	const { getHistory, getLikes, getRetweets } = useTwitter();
 	const [tweets, setTweets] = useState<ITweetHistoryElement[]>([]);
 
 	const updateTweets = async () => {
-		const tweetResult = await getChallengeTweets(
-			"maciej_wiatr",
-			"100DaysOfCode"
-		);
+		const tweetResult = await getHistory();
 		setTweets(tweetResult);
 	};
 
 	useEffect(() => {
 		updateTweets();
+		getLikes();
+		getRetweets();
 		return () => {
 			setTweets([]);
 		};
@@ -37,7 +36,7 @@ function HistorySection() {
 			>
 				Tweet history
 			</Text>
-			<Box as="ul" maxH="md" overflowY="scroll">
+			<Box as="ul" maxH="435px" borderRadius="5px" overflowY="scroll">
 				{tweets.map((tw, index) => {
 					return (
 						<Box

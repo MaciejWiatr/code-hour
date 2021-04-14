@@ -194,7 +194,7 @@ interface ITweetHistoryElement {
 }
 
 interface ISavefileData {
-	chartData: { likes?: []; shares?: [] };
+	chartData: { likes?: any[]; shares?: any[] };
 	day: number;
 	username: string;
 	twitterUsername: string;

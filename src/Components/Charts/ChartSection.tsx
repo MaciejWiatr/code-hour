@@ -1,5 +1,8 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../context";
+import useTwitter from "../../hooks/useTwitter";
+import { IContextValue } from "../../ts/interfaces";
 import { ChartItem } from "./ChartItem";
 
 const exampleData = [
@@ -18,7 +21,24 @@ const exampleData = [
 ];
 
 function ChartsSection() {
-	// TODO: Add likes history pulling
+	const { getLikes, getRetweets } = useTwitter();
+	const [likes, setLikes] = useState<any[]>();
+	const [retweets, setRetweets] = useState<any[]>();
+	const { state } = useContext<IContextValue>(AppContext);
+
+	useEffect(() => {
+		getLikes();
+		getRetweets();
+
+		setLikes(state.chartData.likes);
+		setRetweets(state.chartData.shares);
+		console.log(likes, retweets);
+
+		return () => {
+			setLikes([]);
+			setRetweets([]);
+		};
+	}, []);
 
 	return (
 		<Flex gridArea="tweet-charts" flexDir="column">
@@ -34,24 +54,12 @@ function ChartsSection() {
 				gridTemplateColumns="1fr"
 				overflow="hidden"
 			>
-				<ChartItem
-					name="Likes"
-					data={exampleData}
-					rowStart={0}
-					rowEnd={2}
-				/>
+				<ChartItem name="Likes" data={likes} rowStart={0} rowEnd={2} />
 				<ChartItem
 					name="Shares"
-					data={exampleData}
+					data={retweets}
 					rowStart={2}
 					rowEnd={3}
-				/>
-				<ChartItem
-					name="Comments"
-					data={exampleData}
-					rowStart={3}
-					rowEnd={4}
-					isLast
 				/>
 			</Grid>
 		</Flex>
