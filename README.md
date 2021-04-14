@@ -31,7 +31,7 @@ yarn run start
 👤 **Maciej Wiatr**
 
 -   Website: mwiatr.live
--   Twitter: [@maciej-wiatr](https://twitter.com/maciej-wiatr)
+-   Twitter: [@maciej_wiatr](https://twitter.com/maciej_wiatr)
 -   Github: [@MaciejWiatr](https://github.com/MaciejWiatr)
 -   LinkedIn: [@maciej-wiatr](https://linkedin.com/in/maciej-wiatr)
 
