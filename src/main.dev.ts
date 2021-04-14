@@ -108,7 +108,7 @@ const createWindow = async () => {
 	});
 
 	mainWindow.removeMenu();
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	SavefileService.init();
 	// Remove this if your app does not use auto updates
