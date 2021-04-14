@@ -18,6 +18,8 @@ const exampleData = [
 ];
 
 function ChartsSection() {
+	// TODO: Add likes history pulling
+
 	return (
 		<Flex gridArea="tweet-charts" flexDir="column">
 			<Text fontWeight="medium" fontSize="xl" mb="2" color="gray.300">
