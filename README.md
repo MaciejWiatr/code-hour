@@ -26,6 +26,12 @@ yarn install
 yarn run start
 ```
 
+## Create executable
+
+```sh
+yarn package
+```
+
 ## Author
 
 👤 **Maciej Wiatr**
