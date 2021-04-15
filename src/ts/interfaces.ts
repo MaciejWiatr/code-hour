@@ -193,12 +193,23 @@ interface ITweetHistoryElement {
 	link: string;
 }
 
+interface IChartDataEntry {
+	date: string;
+	total: number;
+}
+
+interface IChartData {
+	likes: IChartDataEntry[];
+	shares: IChartDataEntry[];
+}
+
 interface ISavefileData {
-	chartData: { likes?: any[]; shares?: any[] };
+	chartData: IChartData;
 	day: number;
 	username: string;
 	twitterUsername: string;
 	challengeName: string;
+	lastVisited: string;
 }
 
 interface IAction {

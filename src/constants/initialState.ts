@@ -1,9 +1,12 @@
-const initialState = {
+import { ISavefileData } from "../ts/interfaces";
+
+const initialState: ISavefileData = {
 	chartData: { likes: [], shares: [] },
-	day: 0,
+	day: 1,
 	username: "",
 	challengeName: "",
 	twitterUsername: "",
+	lastVisited: "never",
 };
 
 export default initialState;

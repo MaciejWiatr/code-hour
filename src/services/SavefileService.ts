@@ -1,6 +1,7 @@
 import fs from "fs-extra";
 import initialState from "../constants/initialState";
 import { ISavefileData } from "../ts/interfaces";
+import getToday from "../utils/getToday";
 
 class SavefileService {
 	public static readonly path: string = "./app.save";
@@ -12,9 +13,14 @@ class SavefileService {
 			.then(() => {
 				console.log("Ensured that save file exists");
 				try {
-					console.log(this.getData().username);
+					const data = this.getData();
+					data.lastVisited = getToday();
+					this.setData(data);
 				} catch {
-					this.setData(initialState as any);
+					const initState = initialState;
+					initState.lastVisited = getToday();
+
+					this.setData(initState as any);
 				}
 			})
 			.catch(() => {

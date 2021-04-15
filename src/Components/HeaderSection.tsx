@@ -18,7 +18,7 @@ function HeaderSection() {
 			</Text>
 			<Flex fontSize="4xl" fontWeight="bold">
 				<Text color="red.400" mr="2">
-					24
+					{state.day}
 				</Text>
 				Day of {state.challengeName}
 			</Flex>

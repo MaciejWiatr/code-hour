@@ -15,6 +15,7 @@ function TitleBar() {
 			justifyContent="space-between"
 			alignItems="center"
 			overflow="hidden"
+			zIndex="9999"
 		>
 			<Flex
 				pl="6"

@@ -1,5 +1,5 @@
 import { GridItem, Flex, Box, Text } from "@chakra-ui/react";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useMeasure } from "react-use";
 import { LineChart, Line } from "recharts";
 
@@ -12,37 +12,46 @@ interface IProps {
 }
 
 const ChartItem: FC<IProps> = ({
-	data = [],
+	data,
 	rowStart,
 	rowEnd,
 	name,
 	isLast = false,
 }) => {
-	const [chartData, setChartData] = useState(data);
+	const [sum, setSum] = useState(0);
+	const [diff, setDiff] = useState(0);
 	const [ChartContainerRef, { width, height }] = useMeasure<any>();
 
 	const calculateDiff = () => {
+		console.log("Calculating diff");
 		try {
-			if (chartData.length > 1) {
-				return (
-					chartData[chartData.length].total -
-					chartData[chartData.length - 1].total
+			if (data.length > 0) {
+				setDiff(
+					data[data.length - 1].total - data[data.length - 2].total
 				);
 			} else {
-				return 0;
+				setDiff(0);
 			}
-		} catch {
-			return 0;
-		}
+		} catch (e) {}
 	};
 
 	const calculateSum = () => {
-		let sum = 0;
-		chartData.forEach((entry) => {
-			sum += entry.total;
-		});
-		return sum;
+		console.log("Calculating sum");
+		let dataSum = 0;
+		if (data.length > 0) {
+			data.forEach((entry) => {
+				dataSum += entry.total;
+			});
+		}
+		setSum(dataSum);
 	};
+
+	useEffect(() => {
+		if (typeof data !== "undefined") {
+			calculateSum();
+			calculateDiff();
+		}
+	}, [data]);
 
 	return (
 		<GridItem
@@ -55,13 +64,17 @@ const ChartItem: FC<IProps> = ({
 				<Text fontWeight="semibold" fontSize="md">
 					{name}
 				</Text>
-				<Text color="green.200">
-					{calculateSum()} ({calculateDiff()})
+				<Text color={diff >= 0 ? "green.200" : "red.400"}>
+					{sum}{" "}
+					<Text as="span" color="gray.400">
+						total
+					</Text>{" "}
+					({diff > 0 ? `+${diff}` : diff})
 				</Text>
 			</Flex>
 			<Box w="60%" p={1}>
 				<Box w="full" h="full" p={2} ref={ChartContainerRef}>
-					<LineChart width={width} height={height} data={chartData}>
+					<LineChart width={width} height={height} data={data}>
 						<Line
 							type="monotone"
 							dataKey="total"

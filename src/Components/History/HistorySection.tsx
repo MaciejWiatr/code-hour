@@ -5,7 +5,7 @@ import useTwitter from "../../hooks/useTwitter";
 import { ITweetHistoryElement } from "../../ts/interfaces";
 
 function HistorySection() {
-	const { getHistory, getLikes, getRetweets } = useTwitter();
+	const { getHistory } = useTwitter();
 	const [tweets, setTweets] = useState<ITweetHistoryElement[]>([]);
 
 	const updateTweets = async () => {
@@ -15,8 +15,6 @@ function HistorySection() {
 
 	useEffect(() => {
 		updateTweets();
-		getLikes();
-		getRetweets();
 		return () => {
 			setTweets([]);
 		};

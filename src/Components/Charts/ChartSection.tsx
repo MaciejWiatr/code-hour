@@ -1,42 +1,18 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
+import React, { useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import useTwitter from "../../hooks/useTwitter";
 import { IContextValue } from "../../ts/interfaces";
 import { ChartItem } from "./ChartItem";
 
-const exampleData = [
-	{
-		pv: 50,
-	},
-	{
-		pv: 13,
-	},
-	{
-		pv: 12,
-	},
-	{
-		pv: 39,
-	},
-];
-
 function ChartsSection() {
 	const { getLikes, getRetweets } = useTwitter();
-	const [likes, setLikes] = useState<any[]>();
-	const [retweets, setRetweets] = useState<any[]>();
 	const { state } = useContext<IContextValue>(AppContext);
 
 	useEffect(() => {
+		console.log(state.chartData);
 		getLikes();
 		getRetweets();
-
-		setLikes(state.chartData.likes);
-		setRetweets(state.chartData.shares);
-		console.log(likes, retweets);
-
-		return () => {
-			setLikes([]);
-			setRetweets([]);
-		};
 	}, []);
 
 	return (
@@ -45,18 +21,22 @@ function ChartsSection() {
 				Charts
 			</Text>
 			<Grid
-				h="64"
 				bg="gray.700"
 				w="full"
 				borderRadius="5px"
-				gridTemplateRows="repeat(3,1fr)"
+				gridTemplateRows="repeat(2,1fr)"
 				gridTemplateColumns="1fr"
 				overflow="hidden"
 			>
-				<ChartItem name="Likes" data={likes} rowStart={0} rowEnd={2} />
+				<ChartItem
+					name="Likes"
+					data={state.chartData.likes}
+					rowStart={0}
+					rowEnd={2}
+				/>
 				<ChartItem
 					name="Shares"
-					data={retweets}
+					data={state.chartData.shares}
 					rowStart={2}
 					rowEnd={3}
 				/>

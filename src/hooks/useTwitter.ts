@@ -1,18 +1,12 @@
 import { IContextValue, ITweet } from "../ts/interfaces";
-import dayjs from "dayjs";
 import SavefileService from "../services/SavefileService";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import getToday from "../utils/getToday";
 
 const Twitter = require("twitter");
 const dotenv = require("dotenv");
-const result = dotenv.config();
-
-if (result.error) {
-	console.log(result.error);
-}
-
-console.log(result.parsed);
+dotenv.config();
 
 const useTwitter = () => {
 	const { state, dispatch } = useContext<IContextValue>(AppContext);
@@ -39,14 +33,20 @@ const useTwitter = () => {
 				date: data.date,
 				total: data.total,
 			});
-
-			console.log(newSavefileData);
-			dispatch({ type: "MODIFY_SAVE", payload: newSavefileData });
+		} else {
+			console.log(
+				"Updated existing data entry with followind data:",
+				data
+			);
+			newSavefileData!.chartData[data.type]!.find(
+				(el) => el.date === data.date
+			)!.total = data.total;
 		}
+		dispatch({ type: "MODIFY_SAVE", payload: newSavefileData });
 	};
 
 	const generateSavableData = (total: number, type: "likes" | "shares") => {
-		const today = dayjs().format("DD/MM/YYYY");
+		const today = getToday();
 
 		const data = {
 			date: today,

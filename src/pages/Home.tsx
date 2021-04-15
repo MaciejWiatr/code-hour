@@ -1,17 +1,22 @@
-import { Flex, Box } from "@chakra-ui/react";
-import React, { useContext, useEffect } from "react";
+import { Flex, Box, Portal } from "@chakra-ui/react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { ChartsSection } from "../Components/Charts/ChartSection";
 import { FormSection } from "../Components/Form/FormSection";
 import { HeaderSection } from "../Components/HeaderSection";
 import { HistorySection } from "../Components/History/HistorySection";
 import { SectionsWrapper } from "../Components/Layout/SectionsWrapper";
+import { DayModal } from "../Components/Modal";
 import { TitleBar } from "../Components/TitleBar";
 import { AppContext } from "../context/AppContext";
 import { IContextValue } from "../ts/interfaces";
+import getToday from "../utils/getToday";
 
 const HomePage = () => {
 	const { state } = useContext<IContextValue>(AppContext);
+	const [modalOpen, setModalOpen] = useState(
+		state.lastVisited !== getToday()
+	);
 	const history = useHistory();
 
 	useEffect(() => {
@@ -31,6 +36,9 @@ const HomePage = () => {
 					<ChartsSection />
 				</SectionsWrapper>
 			</Box>
+			<Portal>
+				{modalOpen ? <DayModal setModalOpen={setModalOpen} /> : null}
+			</Portal>
 		</Flex>
 	);
 };

@@ -43,7 +43,6 @@ const LoginPage = () => {
 	const history = useHistory();
 
 	const onSubmit = (data: IFormData) => {
-		console.log(data);
 		dispatch({ type: "MODIFY_SAVE", payload: data });
 		history.push("/");
 	};

@@ -1,11 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.global.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import AppContextProvider, { AppContext } from "./context/AppContext";
+import AppContextProvider from "./context/AppContext";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
-import { IContextValue } from "./ts/interfaces";
 
 export default function App() {
 	return (
