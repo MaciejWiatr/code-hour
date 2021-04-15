@@ -14,6 +14,15 @@
 
 ### 🏠 [Homepage](https://github.com/MaciejWiatr/code-hour)
 
+## Before you try to run it
+You have to create .env file with following data:
+```sh
+API_KEY=<your_twitter_api_key>
+API_KEY_<your_twitter_secret_api_key>
+A_TOKEN=<your_twitter_access_token>
+A_TOKEN_SECRET=<your_twitter_secret_token>
+```
+
 ## Install
 
 ```sh
