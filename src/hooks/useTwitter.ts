@@ -2,7 +2,7 @@ import { IContextValue, ITweet } from "../ts/interfaces";
 import dayjs from "dayjs";
 import SavefileService from "../services/SavefileService";
 import { useContext } from "react";
-import { AppContext } from "../context";
+import { AppContext } from "../context/AppContext";
 
 const Twitter = require("twitter");
 const dotenv = require("dotenv");

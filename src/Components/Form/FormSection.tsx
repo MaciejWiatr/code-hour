@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useTwitter from "../../hooks/useTwitter";
 import Swal from "sweetalert2";
-import { AppContext } from "../../context";
+import { AppContext } from "../../context/AppContext";
 import { IContextValue, textAreaType } from "../../ts/interfaces";
 import CreateTweetService from "../../services/CreateTweetService";
 

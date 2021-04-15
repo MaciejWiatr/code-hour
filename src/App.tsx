@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.global.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import AppContextProvider, { AppContext } from "./context";
+import AppContextProvider, { AppContext } from "./context/AppContext";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import { IContextValue } from "./ts/interfaces";

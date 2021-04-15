@@ -7,7 +7,7 @@ import { HeaderSection } from "../Components/HeaderSection";
 import { HistorySection } from "../Components/History/HistorySection";
 import { SectionsWrapper } from "../Components/Layout/SectionsWrapper";
 import { TitleBar } from "../Components/TitleBar";
-import { AppContext } from "../context";
+import { AppContext } from "../context/AppContext";
 import { IContextValue } from "../ts/interfaces";
 
 const HomePage = () => {

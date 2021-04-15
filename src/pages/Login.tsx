@@ -11,7 +11,7 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
 import { TitleBar } from "../Components/TitleBar";
-import { AppContext } from "../context";
+import { AppContext } from "../context/AppContext";
 import { IContextValue } from "../ts/interfaces";
 
 const InputLabel = (props: any) => (
