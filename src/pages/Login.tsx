@@ -1,6 +1,5 @@
 import {
 	Button,
-	ChakraComponent,
 	Flex,
 	forwardRef,
 	Input,
@@ -11,7 +10,7 @@ import {
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
-import { TitleBar } from "../Components/TitleBar";
+import { TitleBar } from "../components/TitleBar";
 import { AppContext } from "../context/AppContext";
 import { IContextValue } from "../ts/interfaces";
 
