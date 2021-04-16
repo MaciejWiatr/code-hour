@@ -45,7 +45,7 @@ const useTwitter = () => {
 		dispatch({ type: "MODIFY_SAVE", payload: newSavefileData });
 	};
 
-	const generateSavableData = (total: number, type: "likes" | "shares") => {
+	const getSavableData = (total: number, type: "likes" | "shares") => {
 		const today = getToday();
 
 		const data = {
@@ -76,10 +76,16 @@ const useTwitter = () => {
 		let tweets: ITweet[] = await client
 			.get("statuses/user_timeline", {
 				user_id: `@${state.username}`,
+				count: 200,
+				exclude_replies: true,
 			})
 			.then((tweet: ITweet) => tweet);
-		tweets = tweets.filter((r) =>
-			r.entities.hashtags.some((h) => h.text === `${state.challengeName}`)
+
+		tweets = tweets.filter(
+			(r) =>
+				r.entities.hashtags.some(
+					(h) => h.text === `${state.challengeName}`
+				) && r.text.toLowerCase().includes("day")
 		);
 
 		return tweets;
@@ -87,7 +93,6 @@ const useTwitter = () => {
 
 	const getHistory = async () => {
 		let tweets = await getChallengeTweets();
-
 		const tweetHistory = tweets.map((r) => {
 			const [text, link] = r.text.split("…");
 			return {
@@ -98,30 +103,35 @@ const useTwitter = () => {
 		return tweetHistory;
 	};
 
-	const getLikes = async () => {
+	const fetchLikes = async () => {
 		const tweets = await getChallengeTweets();
 
 		let total = 0;
 		tweets.forEach((r) => {
 			total += r.favorite_count;
 		});
-		const data = generateSavableData(total, "likes");
+		const data = getSavableData(total, "likes");
 		saveTweetData(data);
 		return data;
 	};
 
-	const getRetweets = async () => {
+	const fetchRetweets = async () => {
 		const tweets = await getChallengeTweets();
 		let total = 0;
 		tweets.forEach((tw) => {
 			total += tw.retweet_count;
 		});
-		const data = generateSavableData(total, "shares");
+		const data = getSavableData(total, "shares");
 		saveTweetData(data);
 		return data;
 	};
 
-	return { postTweet, getChallengeTweets, getLikes, getHistory, getRetweets };
+	return {
+		postTweet,
+		getLikes: fetchLikes,
+		getHistory,
+		getRetweets: fetchRetweets,
+	};
 };
 
 export default useTwitter;
