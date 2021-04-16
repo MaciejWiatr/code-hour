@@ -1,4 +1,4 @@
-import { Flex, Box, Portal } from "@chakra-ui/react";
+import { Flex, Box, Portal, Link } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { ChartsSection } from "../Components/Charts/ChartSection";
@@ -28,13 +28,26 @@ const HomePage = () => {
 	return (
 		<Flex direction="column" borderRadius="20px" h="full">
 			<TitleBar />
-			<Box w="full" bgColor="gray.800" color="white" p="6" flexGrow={1}>
+			<Box
+				w="full"
+				bgColor="gray.800"
+				color="white"
+				p="6"
+				pb="10"
+				flexGrow={1}
+			>
 				<SectionsWrapper>
-					<HeaderSection />
+					<HeaderSection setModalOpen={setModalOpen} />
 					<FormSection />
 					<HistorySection />
 					<ChartsSection />
 				</SectionsWrapper>
+				<Box w="full" textAlign="left" color="gray.700">
+					Created by:{" "}
+					<Link href="https://github.com/MaciejWiatr" target="blank">
+						Maciej Wiatr
+					</Link>
+				</Box>
 			</Box>
 			<Portal>
 				{modalOpen ? <DayModal setModalOpen={setModalOpen} /> : null}
