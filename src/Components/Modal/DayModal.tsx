@@ -94,6 +94,7 @@ const DayModal: FC<IProps> = ({ setModalOpen }) => {
 				top="0"
 				opacity="0.5"
 				zIndex="modal"
+				onClick={handleSubmit}
 			/>
 		</Flex>
 	);
