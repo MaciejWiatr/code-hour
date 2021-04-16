@@ -1,9 +1,10 @@
 import {
-	Box,
 	Button,
+	ChakraComponent,
 	Flex,
-	FormLabel,
+	forwardRef,
 	Input,
+	InputProps,
 	Spacer,
 	Text,
 } from "@chakra-ui/react";
@@ -20,7 +21,11 @@ const InputLabel = (props: any) => (
 	</Text>
 );
 
-const FormInput = (props: any) => (
+interface IFormInput extends InputProps {
+	register?: any;
+}
+
+const FormInput = forwardRef<IFormInput, "input">((props) => (
 	<Input
 		bgColor="gray.800"
 		border="none"
@@ -29,7 +34,7 @@ const FormInput = (props: any) => (
 		{...props}
 		{...props.register}
 	/>
-);
+));
 
 interface IFormData {
 	username: string;
@@ -88,15 +93,24 @@ const LoginPage = () => {
 					>
 						<Flex flexDir="column" h="full">
 							<InputLabel>Your name</InputLabel>
-							<FormInput register={register("username")} />
+							<FormInput
+								register={register("username")}
+								defaultValue={state.username}
+							/>
 							<InputLabel>
 								Name of the challenge you want to attempt
 							</InputLabel>
-							<FormInput register={register("challengeName")} />
+							<FormInput
+								register={register("challengeName")}
+								defaultValue={state.challengeName}
+							/>
 							<InputLabel>
 								Your twitter username i.e @maciej_wiatr
 							</InputLabel>
-							<FormInput register={register("twitterUsername")} />
+							<FormInput
+								register={register("twitterUsername")}
+								defaultValue={state.twitterUsername}
+							/>
 							<Spacer />
 							<Button
 								colorScheme="red"
