@@ -4,7 +4,7 @@ import { ISavefileData } from "../ts/interfaces";
 import getToday from "../utils/getToday";
 
 class SavefileService {
-	public static readonly path: string = "./app.save";
+	public static readonly path: string = "./app.save.json";
 	private static fileHandler = fs;
 
 	public static init() {
