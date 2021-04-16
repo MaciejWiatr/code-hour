@@ -4,12 +4,13 @@ import {
 	Button,
 	Text,
 	CircularProgress,
+	Box,
+	useToast,
 } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useTwitter from "../../hooks/useTwitter";
-import Swal from "sweetalert2";
 import { AppContext } from "../../context/AppContext";
 import { IContextValue, textAreaType } from "../../ts/interfaces";
 import CreateTweetService from "../../services/CreateTweetService";
@@ -17,12 +18,13 @@ import CreateTweetService from "../../services/CreateTweetService";
 function FormSection() {
 	const { state } = useContext<IContextValue>(AppContext);
 	const { register, handleSubmit, watch } = useForm();
+	const toast = useToast();
 	const [letterNumber, setNumber] = useState(0);
 	const [textAreaStatus, setTextAreaStatus] = useState<textAreaType>("Ok");
 	const [textAreaBorder, setTextAreaBorder] = useState("none");
 	const [submitDisabled, setSubmitDisabled] = useState(false);
+	const [tweet, setTweet] = useState("");
 	const textareaWatch = watch("TweetText");
-	const [previewVal, setPreviewVal] = useState("");
 	const { postTweet } = useTwitter();
 	const statusColors = {
 		Warning: "#ECC94B",
@@ -31,27 +33,43 @@ function FormSection() {
 	};
 
 	const onSubmit = async () => {
-		postTweet(textareaWatch);
-		Swal.fire({
-			position: "top-end",
-			icon: "success",
-			title: "Your tweet has been posted!",
-			showConfirmButton: false,
-			timer: 1500,
+		postTweet(
+			CreateTweetService.generateTweet(
+				textareaWatch,
+				state.day,
+				state.challengeName
+			).trim()
+		);
+		toast({
+			position: "bottom-right",
+			duration: 2000,
+			isClosable: true,
+			render: () => (
+				<Box
+					color="white"
+					p={3}
+					bg="gray.700"
+					shadow="md"
+					borderRadius="5px"
+				>
+					Congrats! Your just tweeted 🎉🎉
+				</Box>
+			),
 		});
 	};
 
 	const handlePreview = () => {
-		const preview = CreateTweetService.generateTweet(
-			textareaWatch,
-			state.day,
-			state.challengeName
+		setTweet(
+			CreateTweetService.generateTweet(
+				textareaWatch,
+				state.day,
+				state.challengeName
+			).trim()
 		);
-		setPreviewVal(preview.trim());
 	};
 
 	const resetPreview = () => {
-		setPreviewVal("");
+		setTweet("");
 	};
 
 	useEffect(() => {
@@ -63,12 +81,12 @@ function FormSection() {
 	}, [textareaWatch, setTextAreaStatus, setNumber]);
 
 	useEffect(() => {
-		if (letterNumber >= 200 && letterNumber <= 250) {
+		if (letterNumber >= 200 && letterNumber < 250) {
 			setTextAreaStatus("Warning");
 		} else if (letterNumber >= 250) {
 			setTextAreaStatus("Error");
 			setSubmitDisabled(true);
-		} else if (letterNumber <= 200) {
+		} else if (letterNumber < 200) {
 			setTextAreaStatus("Ok");
 		} else {
 			setTextAreaStatus("Ok");
@@ -108,7 +126,8 @@ function FormSection() {
 				<Textarea
 					placeholder="Describe your today progress"
 					pt="2"
-					h="28"
+					minH="28"
+					transition="all 0s linear"
 					bgColor="gray.700"
 					border={textAreaBorder}
 					required
@@ -181,14 +200,31 @@ function FormSection() {
 			>
 				Preview
 			</Text>
-			<Textarea
-				pt="2"
-				h="36"
-				bgColor="gray.700"
-				border="none"
-				value={previewVal}
-				readOnly
-			></Textarea>
+			<Box position="relative">
+				<Textarea
+					pt="2"
+					h="36"
+					bgColor="gray.700"
+					border="none"
+					value={tweet}
+					readOnly
+				></Textarea>
+				{!tweet ? (
+					<Flex
+						w="full"
+						h="full"
+						justifyContent="center"
+						alignItems="center"
+						position="absolute"
+						top="0"
+						left="0"
+						zIndex="overlay"
+						pointerEvents="none"
+					>
+						<Text color="gray.900">Preview</Text>
+					</Flex>
+				) : null}
+			</Box>
 			<Button
 				mt="4"
 				colorScheme="black"

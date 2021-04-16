@@ -82,7 +82,8 @@
 			"output": "release"
 		},
 		"extraResources": [
-			"./assets/**"
+			"./assets/**",
+			"./.env"
 		],
 		"publish": {
 			"provider": "github",
@@ -260,7 +261,6 @@
 		"recharts": "^2.0.9",
 		"regenerator-runtime": "^0.13.5",
 		"source-map-support": "^0.5.19",
-		"sweetalert2": "^10.15.7",
 		"twitter": "^1.7.1"
 	},
 	"devEngines": {
