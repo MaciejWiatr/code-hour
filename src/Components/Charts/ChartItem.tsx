@@ -36,14 +36,7 @@ const ChartItem: FC<IProps> = ({
 	};
 
 	const calculateSum = () => {
-		console.log("Calculating sum");
-		let dataSum = 0;
-		if (data.length > 0) {
-			data.forEach((entry) => {
-				dataSum += entry.total;
-			});
-		}
-		setSum(dataSum);
+		setSum(data[data.length - 1].total);
 	};
 
 	useEffect(() => {
@@ -61,7 +54,7 @@ const ChartItem: FC<IProps> = ({
 			borderBottom={!isLast ? "1px solid #1A202C" : ""}
 		>
 			<Flex w="40%" flexDir="column" justifyContent="center" p={1} pl={4}>
-				<Text fontWeight="semibold" fontSize="md">
+				<Text fontSize="sm" mb="0">
 					{name}
 				</Text>
 				<Text color={diff >= 0 ? "green.200" : "red.400"}>

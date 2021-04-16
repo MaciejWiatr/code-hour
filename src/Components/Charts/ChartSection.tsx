@@ -23,6 +23,7 @@ function ChartsSection() {
 			<Grid
 				bg="gray.700"
 				w="full"
+				h="28"
 				borderRadius="5px"
 				gridTemplateRows="repeat(2,1fr)"
 				gridTemplateColumns="1fr"
