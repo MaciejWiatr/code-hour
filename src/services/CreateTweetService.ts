@@ -5,7 +5,7 @@ class CreateTweetService {
 		challenge: string
 	) {
 		return `
-        Day ${day} of ${challenge}!\nToday's progress:\n${message}
+        Day ${day} of #${challenge}!\nToday's progress:\n${message}
         `;
 	}
 }
